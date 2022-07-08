@@ -120,11 +120,11 @@ function Active(props) {
   )
 }
 function App() {
+  const [txData, setTxData] = useState('')
   const [ownerAddress, setOwnerAddress] = useState('')
   const [activeCount, setActiveCount] = useState(1)
   const [permissionData, setPermissionData] = useState({ actives: [], owner: { type: 0 }, witness: { type: 1 }, visible: false })
   const actives = []
-
   for (let i = 0; i < activeCount; i++) {
     actives.push(<Active key={i} callback={(active) => {
       active.permission_name = `active${i}`
@@ -133,8 +133,6 @@ function App() {
       setPermissionData({ ...permissionData })
     }}></Active>)
   }
-
-  console.log(permissionData)
 
   return (
     <div className="relative min-h-screen flex flex-col  overflow-hidden bg-gray-50 py-6 sm:py-12">
@@ -149,20 +147,25 @@ function App() {
           >Load TronLink</button>
           <input type="text" className="rounded-full w-full" placeholder='owner'
             value={ownerAddress} onChange={(e) => { setOwnerAddress(e.target.value) }} />
-          <button className="block rounded-full  px-2 py-2 m-2 bg-red-500 text-white rounded-full shadow-sm"
+          <button className="rounded-full px-2 py-2 m-2 bg-blue-500 text-white rounded-full shadow-sm"
             onClick={() => {
               const tronWeb = window.tronWeb
               const targetAddress = tronWeb.utils.base58.decode58(ownerAddress).map(s => s.toString(16).padStart(2, '0')).join('').substr(0, 42)
               tronWeb.transactionBuilder.updateAccountPermissions(targetAddress, permissionData.owner, permissionData.witness?.keys?.length || null, permissionData.actives)
-                .then(tronWeb.trx.sign).then((raw) => {
-                  console.log(raw)
-                  return tronWeb.trx.sendRawTransaction(raw)
-                }).then(result => {
-                  window.open(`https://shasta.tronscan.org/#/transaction/${result.txid}`)
+                .then(tronWeb.trx.sign).then((txData) => {
+                  setTxData(JSON.stringify(txData, null, 2))
                 })
-              // tronWeb.trx.sendRawTransaction
             }}
           >update permission</button>
+          <button className="rounded-full px-2 py-2 m-2 bg-blue-500 text-white rounded-full shadow-sm"
+            onClick={() => {
+              window.tronWeb.trx.sendRawTransaction(JSON.parse(txData))
+                .then(result => {
+                  window.open(`https://shasta.tronscan.org/#/transaction/${result.txid}`)
+                })
+            }}
+          >summit</button>
+          <textarea className='rounded w-full' value={txData} disabled placeholder='tx data json' rows={5} />
           <Type typeName='owner' count={1} callback={(address, threshold) => {
             setPermissionData({ ...permissionData, ...{ owner: { keys: address, threshold, permission_name: "owner", type: 0 } } })
           }}></Type>
@@ -177,14 +180,14 @@ function App() {
                 onClick={() => {
                   permissionData.actives.length = activeCount + 1
                   setPermissionData({ ...permissionData })
-                    (activeCount + 1 <= 8) && setActiveCount(activeCount + 1)
+                  if (activeCount + 1 <= 8) setActiveCount(activeCount + 1)
                 }}
               >+</button>
               <button className='px-4 py-2 m-1 font-semibold text-sm bg-cyan-500 text-white rounded-full shadow-sm'
                 onClick={() => {
                   permissionData.actives.length = activeCount - 1
                   setPermissionData({ ...permissionData })
-                    (activeCount - 1 >= 0) && setActiveCount(activeCount - 1)
+                  if (activeCount - 1 > 0) setActiveCount(activeCount - 1)
                 }}
               >-</button>
             </div>
