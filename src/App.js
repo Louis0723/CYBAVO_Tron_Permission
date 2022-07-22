@@ -39,14 +39,15 @@ function App() {
               const tronWeb = window.tronWeb
               const targetAddress = tronWeb.utils.base58.decode58(ownerAddress).map(s => s.toString(16).padStart(2, '0')).join('').substr(0, 42)
               tronWeb.transactionBuilder.updateAccountPermissions(targetAddress, permissionData.owner, permissionData.witness?.keys?.length || null, permissionData.actives)
-                .then(tronWeb.trx.sign).then((txData) => {
+                .then((txData) => {
                   setTxData(JSON.stringify(txData, null, 2))
                 })
             }}
           >update permission</button>
           <button className="rounded-full px-2 py-2 m-2 bg-blue-500 text-white rounded-full shadow-sm"
             onClick={() => {
-              window.tronWeb.trx.sendRawTransaction(JSON.parse(txData))
+              const tronWeb = window.tronWeb
+              tronWeb.trx.sign(JSON.parse(txData)).then(tronWeb.trx.sendRawTransaction)
                 .then(result => {
                   window.open(`https://shasta.tronscan.org/#/transaction/${result.txid}`)
                 })
