@@ -40,6 +40,8 @@ function App() {
               const targetAddress = tronWeb.utils.base58.decode58(ownerAddress).map(s => s.toString(16).padStart(2, '0')).join('').substr(0, 42)
               tronWeb.transactionBuilder.updateAccountPermissions(targetAddress, permissionData.owner, permissionData.witness?.keys?.length || null, permissionData.actives)
                 .then((txData) => {
+                  return tronWeb.transactionBuilder.extendExpiration(txData , 600)
+                }).then((txData) => {
                   setTxData(JSON.stringify(txData, null, 2))
                 })
             }}
