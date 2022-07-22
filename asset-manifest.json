@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "https://louis0723.github.io/CYBAVO_Tron_Permission/static/css/main.9387e8f3.css",
-    "main.js": "https://louis0723.github.io/CYBAVO_Tron_Permission/static/js/main.97dd5dc4.js",
+    "main.js": "https://louis0723.github.io/CYBAVO_Tron_Permission/static/js/main.debe9149.js",
     "static/js/787.d6e13fd1.chunk.js": "https://louis0723.github.io/CYBAVO_Tron_Permission/static/js/787.d6e13fd1.chunk.js",
     "index.html": "https://louis0723.github.io/CYBAVO_Tron_Permission/index.html",
     "main.9387e8f3.css.map": "https://louis0723.github.io/CYBAVO_Tron_Permission/static/css/main.9387e8f3.css.map",
-    "main.97dd5dc4.js.map": "https://louis0723.github.io/CYBAVO_Tron_Permission/static/js/main.97dd5dc4.js.map",
+    "main.debe9149.js.map": "https://louis0723.github.io/CYBAVO_Tron_Permission/static/js/main.debe9149.js.map",
     "787.d6e13fd1.chunk.js.map": "https://louis0723.github.io/CYBAVO_Tron_Permission/static/js/787.d6e13fd1.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.9387e8f3.css",
-    "static/js/main.97dd5dc4.js"
+    "static/js/main.debe9149.js"
   ]
 }
