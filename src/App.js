@@ -49,7 +49,9 @@ function App() {
           <button className="rounded-full px-2 py-2 m-2 bg-blue-500 text-white rounded-full shadow-sm"
             onClick={() => {
               const tronWeb = window.tronWeb
-              tronWeb.trx.sign(JSON.parse(txData)).then(tronWeb.trx.sendRawTransaction)
+              tronWeb.trx.sign(JSON.parse(txData)).then((txData)=>{
+                return tronWeb.trx.sendRawTransaction(txData)
+              })
                 .then(result => {
                   window.open(`https://shasta.tronscan.org/#/transaction/${result.txid}`)
                 })
